@@ -1,5 +1,9 @@
 #include <iomanip>
-#include "Deque.h"
+#include <iostream>
+#include <string>
+#include "deque.h"
+
+using namespace std;
 
 Deque::Deque()
 {
@@ -60,7 +64,6 @@ void Deque::popFront()
   currentSize--;
   if (firstIndex == blockSize)
     {
-      delete[] blockMap[firstBlock];
       firstBlock++;
       firstIndex = 0;
     }
@@ -76,7 +79,6 @@ void Deque::popBack()
   currentSize--;
   if (lastIndex == -1)
     {
-      delete[] blockMap[lastBlock];
       lastBlock--;
       lastIndex = blockSize - 1;
     }
@@ -87,6 +89,7 @@ int Deque::getFront()
   if (isEmpty())
     {
       cout << "Deque is empty" << endl;
+      return -1;
     }
   return blockMap[firstBlock][firstIndex];
 }
@@ -102,11 +105,7 @@ int Deque::getBack()
 
 bool Deque::isEmpty()
 {
-  if(currentSize == 0)
-    {
-      return true;
-    }
-  return false;
+    return currentSize == 0;
 }
 
 int Deque::getSize()
@@ -185,3 +184,26 @@ void Deque::expandBack()
   lastIndex = -1;
 }
 
+void Deque::print() {
+    if (isEmpty()) {
+        cout << "Deque is empty!" << endl;
+        return;
+    }
+
+    int count = 0;
+    int block = firstBlock;
+    int index = firstIndex;
+
+    cout << "[ ";
+    while (count < currentSize) {
+        cout << blockMap[block][index] << " ";
+
+        count++;
+        index++;
+        if (index == blockSize) {
+            index = 0;
+            block++;
+        }
+    }
+    cout << "]" << endl;
+}
